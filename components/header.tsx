@@ -15,6 +15,7 @@ import { Bell, Menu, Search } from "lucide-react"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import { Sidebar } from "@/components/sidebar"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 
 export function Header() {
   const router = useRouter()
@@ -60,8 +61,9 @@ export function Header() {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Профиль</DropdownMenuItem>
-              <DropdownMenuItem>Настройки</DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href="/dashboard/settings">Настройки</Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>Выйти</DropdownMenuItem>
             </DropdownMenuContent>

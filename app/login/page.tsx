@@ -12,6 +12,8 @@ import { useRouter } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import Cookies from "js-cookie"
 
+const apiUrl = 'http://localhost:8080';
+
 export default function LoginPage() {
   const [Username, setUsername] = useState("")
   const [Password, setPassword] = useState("")
@@ -24,7 +26,7 @@ export default function LoginPage() {
     setIsLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8080/auth/login', {
+      const response = await fetch(`${apiUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ Username, Password }),

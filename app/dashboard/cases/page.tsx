@@ -6,12 +6,14 @@ import { CaseFilters } from "@/components/cases/case-filters"
 import { Plus, Search } from "lucide-react"
 import Link from "next/link"
 
+const apiUrl = 'http://localhost:8080';
+
 export default async function CasesPage() {
   try {
     const cookieStore = await cookies()
     const authToken = cookieStore.get('authToken')?.value
 
-    const res = await fetch('http://localhost:8080/cases', {
+    const res = await fetch(`${apiUrl}/cases`, {
       headers: {
         Authorization: `Bearer ${authToken}`,
       },
