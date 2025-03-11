@@ -1,62 +1,73 @@
-import { Button } from "@/components/ui/button"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Badge } from "@/components/ui/badge"
-import { CaseDetails } from "@/components/cases/case-details"
-import { CaseDocuments } from "@/components/cases/case-documents"
-import { CaseTimeline } from "@/components/cases/case-timeline"
-import { CaseNotes } from "@/components/cases/case-notes"
-import { ArrowLeft, Edit, Trash } from "lucide-react"
-import Link from "next/link"
+import { cookies } from "next/headers"
 
-export default function CaseDetailPage({ params }: { params: { id: string } }) {
+type CaseData = {
+  caseId: string
+  caseNumber: string
+  clientName: string
+  deadLine: string
+  status: string
+}
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
+async function getCaseData(caseId: string, authToken: string): Promise<CaseData> {
+  const res = await fetch(`${apiUrl}/cases/${caseId}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+    cache: "no-store",
+  })
+
+  if (!res.ok) {
+    if (res.status === 404) {
+      console.error('Case not found')
+    }
+    throw new Error('Failed to fetch case data')
+  }
+
+  return res.json()
+}
+
+export default async function CaseDetailPage({ params }: { params: { id: string } }) {
+  const cookieStore = await cookies()
+  const authToken = cookieStore.get("authToken")?.value
+
+  if (!authToken) {
+    throw new Error('Authentication required')
+  }
+
+  const caseDataResponse = await getCaseData(params.id, authToken)
+  // If the API returns an array, use the first case object.
+  const caseData = Array.isArray(caseDataResponse) ? caseDataResponse[0] : caseDataResponse
+
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Link href="/dashboard/cases">
-            <Button variant="outline" size="icon">
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-          </Link>
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-3xl font-bold tracking-tight">Дело №{params.id}</h1>
-              <Badge>В процессе</Badge>
-            </div>
-            <p className="text-muted-foreground">Создано: 15 июня 2025 • Последнее обновление: 2 дня назад</p>
-          </div>
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+      <div className="max-w-lg w-full bg-white shadow-lg rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">№ case: {caseData.caseNumber}</h2>
+        <div className="space-y-3">
+          <p className="text-gray-700">
+            <span className="font-semibold">Имя клиента:</span> {caseData.clientName}
+          </p>
+          <p className="text-gray-700">
+            <span className="font-semibold">Срок:</span> {caseData.deadLine}
+          </p>
+          <p className="text-gray-700">
+            <span className="font-semibold">Статус:</span>
+            <span
+              className={`ml-2 inline-block px-2 py-1 rounded-full text-xs font-semibold ${
+                caseData.status === "Active"
+                  ? "bg-green-500 text-white"
+                  : caseData.status === "Pending"
+                  ? "bg-yellow-500 text-white"
+                  : "bg-gray-500 text-white"
+              }`}
+            >
+              {caseData.status}
+            </span>
+          </p>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="icon">
-            <Edit className="h-4 w-4" />
-          </Button>
-          <Button variant="destructive" size="icon">
-            <Trash className="h-4 w-4" />
-          </Button>
-        </div>
+        
       </div>
-
-      <Tabs defaultValue="details" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="details">Детали</TabsTrigger>
-          <TabsTrigger value="documents">Документы</TabsTrigger>
-          <TabsTrigger value="timeline">Хронология</TabsTrigger>
-          <TabsTrigger value="notes">Заметки</TabsTrigger>
-        </TabsList>
-        <TabsContent value="details" className="space-y-4">
-          <CaseDetails id={params.id} />
-        </TabsContent>
-        <TabsContent value="documents" className="space-y-4">
-          <CaseDocuments id={params.id} />
-        </TabsContent>
-        <TabsContent value="timeline" className="space-y-4">
-          <CaseTimeline id={params.id} />
-        </TabsContent>
-        <TabsContent value="notes" className="space-y-4">
-          <CaseNotes id={params.id} />
-        </TabsContent>
-      </Tabs>
     </div>
   )
 }
-
