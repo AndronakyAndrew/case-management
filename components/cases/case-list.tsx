@@ -1,7 +1,9 @@
+import Link from "next/link"
 import React from "react"
+import { Button } from "@/components/ui/button"
 
 interface Case {
-  id: string
+  caseId: string
   caseNumber: string
   clientName: string
   status: string
@@ -19,7 +21,7 @@ export function CaseList({ data }: CaseListProps) {
   return (
     <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {data.map((c) => (
-        <li key={c.id} className="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
+        <li key={c.caseId} className="bg-white rounded-lg shadow p-4 hover:shadow-md transition-shadow">
           <div className="mb-2">
             <span className="block text-sm font-medium text-gray-500">Номер дела</span>
             <span className="block text-lg font-semibold text-gray-800">{c.caseNumber}</span>
@@ -40,6 +42,11 @@ export function CaseList({ data }: CaseListProps) {
               }`}>
               {c.status}
             </span>
+          </div>
+          <div className="mt-4">
+            <Link href={`/dashboard/cases/${c.caseId}`}>
+              <Button variant="outline">Детали</Button>
+            </Link>
           </div>
         </li>
       ))}

@@ -6,7 +6,7 @@ import { CaseFilters } from "@/components/cases/case-filters"
 import { Plus, Search } from "lucide-react"
 import Link from "next/link"
 
-const apiUrl = 'http://localhost:8080';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default async function CasesPage() {
   try {

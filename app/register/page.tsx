@@ -8,9 +8,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
-import Cookies from "js-cookie"
 
-const apiUrl = 'http://localhost:8080';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function RegisterPage() {
     const [Username, setUsername] = useState("")
@@ -53,7 +52,7 @@ export default function RegisterPage() {
           <Card className="w-full max-w-md">
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl font-bold">Регистрация в системе</CardTitle>
-              <CardDescription>Введите ваши учетные данные для регистрация</CardDescription>
+              <CardDescription>Введите ваши учетные данные для регистрации</CardDescription>
             </CardHeader>
             <form onSubmit={handleSubmit}>
               <CardContent className="space-y-4">
@@ -109,7 +108,7 @@ export default function RegisterPage() {
                   {isLoading ? "Регистрация..." : "Зарегистрироваться"}
                 </Button>
                 <div className="text-center text-sm">
-                  Есть аккаунта?{" "}
+                  Есть аккаунт?{" "}
                   <Link href="/login" className="text-primary hover:underline">
                     Войти
                   </Link>

@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation"
 import { useToast } from "@/components/ui/use-toast"
 import Cookies from "js-cookie"
 
-const apiUrl = 'http://localhost:8080';
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LoginPage() {
   const [Username, setUsername] = useState("")
