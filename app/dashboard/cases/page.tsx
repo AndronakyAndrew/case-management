@@ -34,32 +34,34 @@ export default async function CasesPage() {
     }
 
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight">Дела</h1>
-            <p className="text-muted-foreground">Управляйте всеми вашими делами</p>
+      <main className="max-w-7xl mx-auto p-6 transform -translate-x-4 -translate-y-2">
+        <div className="bg-white rounded-lg shadow p-6 mb-8">
+          <div className="flex items-center justify-between">
+            <div className="p-4 bg-gradient-to-r from-blue-100 to-blue-50 rounded-md shadow-md">
+              <h1 className="text-3xl font-bold tracking-tight text-gray-800">Дела</h1>
+              <p className="mt-1 text-lg text-gray-600">Управляйте всеми вашими делами</p>
+            </div>
+            <Link href="/dashboard/cases/add" className="transition-transform duration-200 hover:scale-105">
+              <Button className="bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white gap-2 shadow-md hover:shadow-lg px-4 py-2 rounded-md">
+                <Plus className="h-4 w-4" /> Новое дело
+              </Button>
+            </Link>
           </div>
-          <Link href="/dashboard/cases/add">
-            <Button className="gap-2">
-              <Plus className="h-4 w-4" /> Новое дело
-            </Button>
-          </Link>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-6">
           <div className="w-full md:w-64 flex-shrink-0">
             <CaseFilters />
           </div>
-          <div className="flex-1 space-y-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-              <Input placeholder="Поиск дел..." className="pl-10" />
+          <div className="flex-1 space-y-6">
+            <div className="relative bg-white p-4 rounded-lg border border-gray-200 hover:border-blue-500 shadow-md hover:shadow-xl transition-all duration-300 focus-within:ring-2 focus-within:ring-blue-500">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground transition-colors duration-300" />
+              <Input placeholder="Поиск дел..." className="pl-12 border-0 focus:outline-none" />
             </div>
             <CaseList data={data} />
           </div>
         </div>
-      </div>
+      </main>
     )
   } catch (error) {
     console.error("Error fetching cases:", error)

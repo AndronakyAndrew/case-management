@@ -5,13 +5,13 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recha
 
 export function Overview() {
   const data = [
-    { name: "Янв", total: 12 },
-    { name: "Фев", total: 18 },
-    { name: "Мар", total: 24 },
-    { name: "Апр", total: 32 },
-    { name: "Май", total: 28 },
-    { name: "Июн", total: 36 },
-    { name: "Июл", total: 42 },
+    { name: "Мар", всего: 5 },
+    { name: "Апр", всего: 0 },
+    { name: "Май", всего: 0 },
+    { name: "Июн", всего: 0 },
+    { name: "Июл", всего: 0 },
+    { name: "Авг", всего: 0 },
+    { name: "Сен", всего: 0 }
   ]
 
   return (
@@ -32,7 +32,7 @@ export function Overview() {
               tickFormatter={(value) => `${value}`}
             />
             <Tooltip />
-            <Bar dataKey="total" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-primary" />
+            <Bar dataKey="всего" fill="currentColor" radius={[4, 4, 0, 0]} className="fill-primary" />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

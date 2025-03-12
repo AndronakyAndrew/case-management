@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="ru">
       <body className={inter.className}>
-        {children}
+        <DarkModeProvider>
+          {children}
+        </DarkModeProvider>
         <Toaster />
       </body>
     </html>
@@ -29,3 +31,4 @@ export default function RootLayout({
 
 
 import './globals.css'
+import { DarkModeProvider } from "./providers/DarkModeProvider"
