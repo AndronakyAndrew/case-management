@@ -1,5 +1,6 @@
 "use client"
-import { useState } from "react"  // <-- added hook for state
+
+import { useState } from "react"
 import type React from "react"
 
 import Link from "next/link"
@@ -7,6 +8,8 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { BarChart3, FileText, Home, Settings, Users, Calendar, MessageSquare } from "lucide-react"
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
+import { VisuallyHidden } from  "@/components/ui/visually-hidden"
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   items?: {
@@ -18,7 +21,7 @@ interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
 
 export function Sidebar({ className, ...props }: SidebarNavProps) {
   const pathname = usePathname()
-  const [isSupportOpen, setSupportOpen] = useState(false) // <-- state for modal
+  const [isSupportOpen, setSupportOpen] = useState(false)
 
   const items = [
     {
@@ -79,7 +82,7 @@ export function Sidebar({ className, ...props }: SidebarNavProps) {
                   "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground",
                   pathname === item.href || (pathname && pathname.startsWith(`${item.href}/`))
                     ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground",
+                    : "text-muted-foreground"
                 )}
               >
                 {item.icon}
@@ -97,7 +100,7 @@ export function Sidebar({ className, ...props }: SidebarNavProps) {
                 variant="outline"
                 size="sm"
                 className="w-full"
-                onClick={() => setSupportOpen(true)}  // <-- opens modal on click
+                onClick={() => setSupportOpen(true)}
               >
                 Связаться с поддержкой
               </Button>
@@ -106,14 +109,11 @@ export function Sidebar({ className, ...props }: SidebarNavProps) {
         </div>
       </nav>
       {isSupportOpen && (
-        <div
-          className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 transition-opacity duration-300"
-          onClick={() => setSupportOpen(false)}
-        >
-          <div
-            className="bg-white p-8 rounded-lg shadow-2xl border border-gray-200 transform transition-all duration-300 hover:scale-105"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <Dialog open={isSupportOpen} onOpenChange={setSupportOpen}>
+          <DialogContent>
+            <VisuallyHidden>
+              <DialogTitle>Служба поддержки</DialogTitle>
+            </VisuallyHidden>
             <h2 className="mb-4 text-2xl font-bold text-gray-800">Служба поддержки</h2>
             <p className="mb-6 text-gray-600">
               Если вам нужна помощь, пожалуйста, напишите нам по адресу{" "}
@@ -122,8 +122,8 @@ export function Sidebar({ className, ...props }: SidebarNavProps) {
               </a>.
             </p>
             <Button onClick={() => setSupportOpen(false)}>Закрыть</Button>
-          </div>
-        </div>
+          </DialogContent>
+        </Dialog>
       )}
     </>
   )

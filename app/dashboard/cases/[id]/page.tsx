@@ -1,4 +1,7 @@
+import { error } from "console"
+import { redirect } from "next/dist/server/api-utils"
 import { cookies } from "next/headers"
+import Link from "next/link"
 
 type CaseData = {
   caseId: string
@@ -20,9 +23,9 @@ async function getCaseData(caseId: string, authToken: string): Promise<CaseData>
 
   if (!res.ok) {
     if (res.status === 404) {
-      console.error('Case not found')
+      console.error("Case not found")
     }
-    throw new Error('Failed to fetch case data')
+    throw new Error("Failed to fetch case data")
   }
 
   return res.json()
@@ -33,40 +36,75 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
   const authToken = cookieStore.get("authToken")?.value
 
   if (!authToken) {
-    throw new Error('Authentication required')
+    throw error("Unauthorized")
   }
 
   const caseDataResponse = await getCaseData(params.id, authToken)
-  // If the API returns an array, use the first case object.
   const caseData = Array.isArray(caseDataResponse) ? caseDataResponse[0] : caseDataResponse
 
+  // Format the deadline to a more understandable format
+  const formattedDeadLine = new Date(caseData.deadLine).toLocaleDateString("ru-RU", {
+    year: "numeric",
+    month: "long",
+    day: "numeric"
+  })
+
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-      <div className="max-w-lg w-full bg-white shadow-lg rounded-lg p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">№ case: {caseData.caseNumber}</h2>
-        <div className="space-y-3">
-          <p className="text-gray-700">
-            <span className="font-semibold">Имя клиента:</span> {caseData.clientName}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Срок:</span> {caseData.deadLine}
-          </p>
-          <p className="text-gray-700">
-            <span className="font-semibold">Статус:</span>
-            <span
-              className={`ml-2 inline-block px-2 py-1 rounded-full text-xs font-semibold ${
-                caseData.status === "Active"
-                  ? "bg-green-500 text-white"
-                  : caseData.status === "Pending"
-                  ? "bg-yellow-500 text-white"
-                  : "bg-gray-500 text-white"
-              }`}
+    <div className="relative min-h-screen bg-gradient-to-r from-blue-200 to-indigo-200 flex flex-col items-center justify-center p-6">
+      {/* Floating Back Button */}
+      <div className="absolute top-6 left-6 z-20">
+        <Link
+          href="/dashboard/cases"
+          className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md shadow-lg hover:bg-blue-600 hover:scale-105 transition transform duration-150 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
+          &larr; Назад
+        </Link>
+      </div>
+      {/* Main Content */}
+      <div className="z-10">
+        {/* Header Section */}
+        <header className="mb-8">
+          <h1 className="text-4xl font-extrabold text-gray-800">Детали Дела</h1>
+        </header>
+        {/* Card Section */}
+        <div className="max-w-lg w-full bg-white shadow-2xl rounded-xl p-8 transition-transform transform hover:scale-105">
+          <div className="mb-4 border-b pb-2">
+            <h2 className="text-3xl font-bold text-gray-900">№ {caseData.caseNumber}</h2>
+          </div>
+          <div className="space-y-4">
+            <div>
+              <p className="text-lg text-gray-700">
+                <span className="font-semibold">Имя клиента:</span> {caseData.clientName}
+              </p>
+            </div>
+            <div>
+              <p className="text-lg text-gray-700">
+                <span className="font-semibold">Срок:</span> {formattedDeadLine}
+              </p>
+            </div>
+            <div className="flex items-center">
+              <span className="font-semibold text-lg text-gray-700">Статус:</span>
+              <span
+                className={`ml-3 inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                  caseData.status === "Pending"
+                    ? "bg-yellow-500 text-white"
+                    : "bg-green-500 text-white"
+                }`}
+              >
+                {caseData.status}
+              </span>
+            </div>
+          </div>
+          {/* Edit Button */}
+          <div className="mt-4 flex justify-end">
+            <Link
+              href={`/dashboard/cases/edit/${caseData.caseId}`}
+              className="inline-flex items-center justify-center px-6 py-2 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-indigo-600 transform hover:scale-105 transition duration-200 focus:outline-none"
             >
-              {caseData.status}
-            </span>
-          </p>
+              Редактировать
+            </Link>
+          </div>
         </div>
-        
       </div>
     </div>
   )

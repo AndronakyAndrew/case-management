@@ -25,92 +25,61 @@ export default function MessagesPage() {
     };
 
     return (
-        <div
-            style={{
-                padding: '2rem',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: '100vh',
-                backgroundColor: '#f2f2f2',
-            }}
-        >
-            <div
-                style={{
-                    width: '100%',
-                    maxWidth: '600px',
-                    background: '#fff',
-                    padding: '2rem',
-                    borderRadius: '8px',
-                    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-                }}
-            >
-                <h1 style={{ textAlign: 'center', marginBottom: '1.5rem', color: '#333' }}>
-                    Messages
+        <div className="min-h-screen bg-gradient-to-r from-blue-100 via-blue-200 to-blue-300 flex items-center justify-center p-6">
+            <div className="bg-white shadow-2xl rounded-xl p-8 w-full max-w-4xl">
+                <h1 className="text-4xl md:text-5xl font-bold text-center text-gray-800 mb-8">
+                    Сообщения
                 </h1>
-                <form onSubmit={handleSubmit} style={{ display: 'flex', marginBottom: '1.5rem' }}>
+                <form onSubmit={handleSubmit} className="flex mb-8">
                     <input
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
-                        placeholder="Enter your message"
-                        style={{
-                            flex: 1,
-                            padding: '0.75rem',
-                            fontSize: '1rem',
-                            border: '1px solid #ccc',
-                            borderRadius: '4px',
-                            marginRight: '0.5rem',
-                        }}
+                        placeholder="Введите свое сообщение..."
+                        className="flex-1 p-4 border border-gray-300 rounded-l-xl focus:outline-none focus:ring-2 focus:ring-blue-400 transition-colors duration-200"
                     />
                     <button
                         type="submit"
-                        style={{
-                            padding: '0.75rem 1rem',
-                            backgroundColor: '#007BFF',
-                            color: '#fff',
-                            border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer',
-                        }}
+                        className="px-8 py-4 bg-blue-500 text-white rounded-r-xl hover:bg-blue-600 transition-colors duration-200"
                     >
-                        Send
+                        Сохранить
                     </button>
                 </form>
-                <ul style={{ listStyle: 'none', padding: 0, maxHeight: '300px', overflowY: 'auto', marginBottom: '2rem' }}>
+                <ul className="mb-8 max-h-60 overflow-y-auto border border-gray-200 rounded-xl">
                     {messages.map((message) => (
                         <li
                             key={message.id}
-                            style={{
-                                padding: '0.75rem',
-                                borderBottom: '1px solid #eee',
-                            }}
+                            className="p-4 border-b border-gray-200 last:border-0 transition-transform transform hover:scale-105 hover:bg-gray-50"
                         >
                             {message.text}
                         </li>
                     ))}
                 </ul>
-                <h2 style={{ textAlign: 'center', marginBottom: '1rem', color: '#333' }}>Message History</h2>
-                <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                    <thead>
-                        <tr>
-                            <th style={{ border: '1px solid #ccc', padding: '0.5rem', backgroundColor: '#f9f9f9' }}>ID</th>
-                            <th style={{ border: '1px solid #ccc', padding: '0.5rem', backgroundColor: '#f9f9f9' }}>Message</th>
-                            <th style={{ border: '1px solid #ccc', padding: '0.5rem', backgroundColor: '#f9f9f9' }}>Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {messages.map((message) => (
-                            <tr key={message.id}>
-                                <td style={{ border: '1px solid #ccc', padding: '0.5rem', textAlign: 'center' }}>{message.id}</td>
-                                <td style={{ border: '1px solid #ccc', padding: '0.5rem' }}>{message.text}</td>
-                                <td style={{ border: '1px solid #ccc', padding: '0.5rem', textAlign: 'center' }}>
-                                    {message.createdAt.toLocaleString()}
-                                </td>
+                <h2 className="text-3xl font-semibold text-gray-700 text-center mb-6">
+                    История сообщений
+                </h2>
+                <div className="overflow-x-auto">
+                    <table className="min-w-full text-left">
+                        <thead>
+                            <tr className="bg-gray-200">
+                                <th className="border px-6 py-3 text-center">№</th>
+                                <th className="border px-6 py-3">Сообщение</th>
+                                <th className="border px-6 py-3 text-center">Дата и время</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {messages.map((message) => (
+                                <tr key={message.id} className="transition-colors duration-200 hover:bg-gray-100 even:bg-gray-50">
+                                    <td className="border px-6 py-3 text-center">{message.id}</td>
+                                    <td className="border px-6 py-3">{message.text}</td>
+                                    <td className="border px-6 py-3 text-center">
+                                        {message.createdAt.toLocaleString()}
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     );
