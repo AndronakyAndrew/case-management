@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
 const getAuthToken = (): string | null => {
     // Get authToken from browser cookies
     const match = document.cookie.match(new RegExp("(^| )" + "authToken" + "=([^;]+)"));
@@ -23,7 +25,7 @@ export default function NewCasePage() {
         try {
             const authToken = getAuthToken();
 
-            const res = await fetch("http://localhost:8080/cases/add", {
+            const res = await fetch(`${apiUrl}/cases/add`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -36,9 +38,8 @@ export default function NewCasePage() {
                 throw new Error("Failed to create case.");
             }
 
-            const caseData = await res.json();
-            // Redirect to the new case detail page after successful creation.
-            router.push(`/dashboard/cases/${caseData.id}`);
+            //const caseData = await res.json();
+            router.push(`/dashboard/cases`);
         } catch (error) {
             console.error(error);
         } finally {

@@ -9,112 +9,64 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export function CaseFilters() {
   return (
-    <div className="space-y-4">
+    <div className="bg-gradient-to-r from-sky-50 to-white p-6 rounded-xl shadow-lg border border-gray-200 space-y-6">
       <div>
-        <h3 className="mb-2 text-sm font-medium">Статус</h3>
-        <div className="space-y-2">
-          <div className="flex items-center space-x-2">
+        <h3 className="mb-4 text-xl font-bold text-gray-800">Статус</h3>
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
             <Checkbox id="status-all" />
-            <Label htmlFor="status-all">Все</Label>
+            <Label htmlFor="status-all" className="text-base text-gray-700">Все</Label>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <Checkbox id="status-in-progress" />
-            <Label htmlFor="status-in-progress">В процессе</Label>
+            <Label htmlFor="status-in-progress" className="text-base text-gray-700">В процессе</Label>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <Checkbox id="status-completed" />
-            <Label htmlFor="status-completed">Завершено</Label>
+            <Label htmlFor="status-completed" className="text-base text-gray-700">Завершено</Label>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-3">
             <Checkbox id="status-attention" />
-            <Label htmlFor="status-attention">Требует внимания</Label>
+            <Label htmlFor="status-attention" className="text-base text-gray-700">Требует внимания</Label>
           </div>
         </div>
       </div>
 
-      <Separator />
-
-      <div>
-        <h3 className="mb-2 text-sm font-medium">Приоритет</h3>
-        <RadioGroup defaultValue="all">
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="all" id="priority-all" />
-            <Label htmlFor="priority-all">Все</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="high" id="priority-high" />
-            <Label htmlFor="priority-high">Высокий</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="medium" id="priority-medium" />
-            <Label htmlFor="priority-medium">Средний</Label>
-          </div>
-          <div className="flex items-center space-x-2">
-            <RadioGroupItem value="low" id="priority-low" />
-            <Label htmlFor="priority-low">Низкий</Label>
-          </div>
-        </RadioGroup>
-      </div>
-
-      <Separator />
+      <Separator className="bg-gray-300" />
 
       <Accordion type="single" collapsible className="w-full">
-        <AccordionItem value="assignee">
-          <AccordionTrigger className="text-sm font-medium">Ответственный</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2 pt-1">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="assignee-all" />
-                <Label htmlFor="assignee-all">Все</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="assignee-ivan" />
-                <Label htmlFor="assignee-ivan">Иван П.</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="assignee-anna" />
-                <Label htmlFor="assignee-anna">Анна К.</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="assignee-sergey" />
-                <Label htmlFor="assignee-sergey">Сергей М.</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="assignee-elena" />
-                <Label htmlFor="assignee-elena">Елена В.</Label>
-              </div>
-            </div>
-          </AccordionContent>
-        </AccordionItem>
-
         <AccordionItem value="date">
-          <AccordionTrigger className="text-sm font-medium">Дата создания</AccordionTrigger>
-          <AccordionContent>
-            <div className="space-y-2 pt-1">
-              <div className="flex items-center space-x-2">
+          <AccordionTrigger className="text-base font-semibold text-gray-800 hover:text-blue-600 transition-colors duration-200">
+            Дата создания
+          </AccordionTrigger>
+          <AccordionContent className="pt-2">
+            <div className="space-y-3">
+              <div className="flex items-center space-x-3">
                 <Checkbox id="date-all" />
-                <Label htmlFor="date-all">Все время</Label>
+                <Label htmlFor="date-all" className="text-base text-gray-700">Все время</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Checkbox id="date-today" />
-                <Label htmlFor="date-today">Сегодня</Label>
+                <Label htmlFor="date-today" className="text-base text-gray-700">Сегодня</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Checkbox id="date-week" />
-                <Label htmlFor="date-week">Последняя неделя</Label>
+                <Label htmlFor="date-week" className="text-base text-gray-700">Последняя неделя</Label>
               </div>
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Checkbox id="date-month" />
-                <Label htmlFor="date-month">Последний месяц</Label>
+                <Label htmlFor="date-month" className="text-base text-gray-700">Последний месяц</Label>
               </div>
             </div>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
 
-      <Separator />
+      <Separator className="bg-gray-300" />
 
-      <Button className="w-full">Применить фильтры</Button>
+      <Button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-medium text-lg py-3 rounded-full transition-all duration-200 shadow-md hover:shadow-lg">
+        Применить фильтры
+      </Button>
     </div>
   )
 }

@@ -55,92 +55,205 @@ const ReportsPage: React.FC = () => {
         setNewDescription('');
     };
 
+    // Handlers to add focus styling for input & textarea
+    const handleFocus = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        e.currentTarget.style.borderColor = '#007acc';
+        e.currentTarget.style.boxShadow = '0 0 5px rgba(0, 122, 204, 0.5)';
+    };
+
+    const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        e.currentTarget.style.borderColor = '#ccc';
+        e.currentTarget.style.boxShadow = 'none';
+    };
+
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-            <h1 style={{ marginBottom: '20px', textAlign: 'center', color: '#333' }}>Reports Page</h1>
+        <div style={{
+            minHeight: '100vh',
+            padding: '40px 20px',
+            background: 'linear-gradient(135deg, #e0eafc, #cfdef3)',
+            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif"
+        }}>
+            <h1 style={{
+                textAlign: 'center',
+                color: '#333',
+                marginBottom: '30px',
+                fontSize: '2.5rem'
+            }}>
+                
+            </h1>
             
             {/* New Report Form */}
             <div style={{
                 maxWidth: '600px',
                 margin: '0 auto 40px',
-                padding: '20px',
-                border: '1px solid #ddd',
-                borderRadius: '8px',
-                boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                padding: '30px',
+                background: '#fff',
+                borderRadius: '12px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                border: '1px solid #eaeaea'
             }}>
-                <h2 style={{ marginBottom: '15px', textAlign: 'center', color: '#222' }}>Add New Report</h2>
+                <h2 style={{
+                    textAlign: 'center',
+                    color: '#007acc',
+                    marginBottom: '20px',
+                    fontSize: '1.75rem'
+                }}>
+                    Добавить отчет
+                </h2>
                 <form onSubmit={handleAddReport}>
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px', color: '#444' }}>
-                            Title:
+                <div style={{ marginBottom: '20px' }}>
+                        <label style={{
+                            display: 'block',
+                            marginBottom: '8px',
+                            color: '#444',
+                            fontWeight: 600
+                        }}>
+                            Название:
                         </label>
                         <input
                             type="text"
                             value={newTitle}
                             onChange={e => setNewTitle(e.target.value)}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
                             style={{
                                 width: '100%',
-                                padding: '10px',
-                                borderRadius: '4px',
-                                border: '1px solid #ccc'
+                                padding: '12px',
+                                borderRadius: '8px',
+                                border: '1px solid #ccc',
+                                fontSize: '1rem',
+                                transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+                                outline: 'none'
                             }}
                         />
                     </div>
-                    <div style={{ marginBottom: '15px' }}>
-                        <label style={{ display: 'block', marginBottom: '5px', color: '#444' }}>
-                            Description:
+                    <div style={{ marginBottom: '20px' }}>
+                        <label style={{
+                            display: 'block',
+                            marginBottom: '8px',
+                            color: '#444',
+                            fontWeight: 600
+                        }}>
+                            Описание:
                         </label>
                         <textarea
                             value={newDescription}
                             onChange={e => setNewDescription(e.target.value)}
+                            onFocus={handleFocus}
+                            onBlur={handleBlur}
                             style={{
                                 width: '100%',
-                                padding: '10px',
-                                borderRadius: '4px',
+                                padding: '12px',
+                                borderRadius: '8px',
                                 border: '1px solid #ccc',
-                                minHeight: '80px'
+                                fontSize: '1rem',
+                                minHeight: '120px',
+                                transition: 'border-color 0.3s ease, box-shadow 0.3s ease',
+                                outline: 'none'
                             }}
                         />
                     </div>
-                    {formError && <p style={{ color: 'red', marginBottom: '15px', textAlign: 'center' }}>{formError}</p>}
+                    {formError && <p style={{
+                        color: '#d32f2f',
+                        marginBottom: '20px',
+                        textAlign: 'center',
+                        fontWeight: 500,
+                        transition: 'opacity 0.3s ease'
+                    }}>{formError}</p>}
                     <button
                         type="submit"
                         style={{
                             width: '100%',
-                            padding: '10px',
+                            padding: '12px',
                             background: '#007acc',
                             color: '#fff',
                             border: 'none',
-                            borderRadius: '4px',
-                            cursor: 'pointer'
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            fontSize: '1rem',
+                            fontWeight: 600,
+                            transition: 'background 0.3s ease, box-shadow 0.3s ease'
+                        }}
+                        onMouseOver={e => {
+                            e.currentTarget.style.background = '#005fa3';
+                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 95, 163, 0.5)';
+                        }}
+                        onMouseOut={e => {
+                            e.currentTarget.style.background = '#007acc';
+                            e.currentTarget.style.boxShadow = 'none';
+                        }}
+                        onFocus={e => {
+                            e.currentTarget.style.outline = '2px solid #005fa3';
+                            e.currentTarget.style.boxShadow = '0 0 5px rgba(0, 95, 163, 0.5)';
+                        }}
+                        onBlur={e => {
+                            e.currentTarget.style.outline = 'none';
+                            e.currentTarget.style.boxShadow = 'none';
                         }}
                     >
-                        Add Report
+                        Добавить отчет
                     </button>
                 </form>
             </div>
 
+            {/* Reports List */}
             {loading ? (
-                <p style={{ textAlign: 'center', color: '#555' }}>Loading reports...</p>
+                <p style={{
+                    textAlign: 'center',
+                    color: '#555',
+                    fontSize: '1.2rem'
+                }}>Загрузка отчетов...</p>
             ) : error ? (
-                <p style={{ textAlign: 'center', color: 'red' }}>{error}</p>
+                <p style={{
+                    textAlign: 'center',
+                    color: 'red',
+                    fontSize: '1.2rem'
+                }}>{error}</p>
             ) : reports.length > 0 ? (
-                <ul style={{ listStyle: 'none', padding: 0, maxWidth: '800px', margin: '0 auto' }}>
+                <ul style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    maxWidth: '800px',
+                    margin: '0 auto'
+                }}>
                     {reports.map(report => (
                         <li key={report.id} style={{
-                            background: '#f9f9f9',
-                            marginBottom: '15px',
-                            padding: '15px',
+                            background: '#fff',
+                            marginBottom: '20px',
+                            padding: '20px',
                             borderRadius: '8px',
-                            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'
-                        }}>
-                            <h2 style={{ margin: '0 0 10px 0', color: '#222' }}>{report.title}</h2>
-                            <p style={{ margin: 0, color: '#666' }}>{report.description}</p>
+                            boxShadow: '0 2px 6px rgba(0,0,0,0.08)',
+                            borderLeft: '5px solid #007acc',
+                            transition: 'transform 0.2s, box-shadow 0.2s'
+                        }}
+                        onMouseOver={e => {
+                            e.currentTarget.style.transform = 'scale(1.02)';
+                            e.currentTarget.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+                        }}
+                        onMouseOut={e => {
+                            e.currentTarget.style.transform = 'scale(1)';
+                            e.currentTarget.style.boxShadow = '0 2px 6px rgba(0,0,0,0.08)';
+                        }}
+                        >
+                            <h2 style={{
+                                margin: '0 0 10px 0',
+                                color: '#007acc',
+                                fontSize: '1.5rem'
+                            }}>{report.title}</h2>
+                            <p style={{
+                                margin: 0,
+                                color: '#666',
+                                fontSize: '1rem'
+                            }}>{report.description}</p>
                         </li>
                     ))}
                 </ul>
             ) : (
-                <p style={{ textAlign: 'center', color: '#555' }}>No reports available.</p>
+                <p style={{
+                    textAlign: 'center',
+                    color: '#555',
+                    fontSize: '1.2rem'
+                }}>Нет доступных отчетов.</p>
             )}
         </div>
     );
