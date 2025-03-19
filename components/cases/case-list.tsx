@@ -1,6 +1,9 @@
+"use client";
+
 import Link from "next/link"
 import React from "react"
 import { Button } from "@/components/ui/button"
+import DeleteCaseButton from "./DeleteCaseButton"
 
 interface Case {
   caseId: string
@@ -14,9 +17,7 @@ interface CaseListProps {
 }
 
 export function CaseList({ data }: CaseListProps) {
-  if (!data.length) {
-    return <div className="text-center text-gray-500 py-4">Нет дел для отображения.</div>
-  }
+  const [cases, setCases] = React.useState<Case[]>(data)
 
   const getStatusClasses = (status: string) => {
     switch (status) {
@@ -25,22 +26,40 @@ export function CaseList({ data }: CaseListProps) {
           stripe: "bg-yellow-500",
           badge: "bg-yellow-500"
         }
-      case "Закрыт":
+      case "Завершен":
         return {
           stripe: "bg-green-500",
           badge: "bg-green-500"
         }
+      case "Открыт":
+        return{
+          stripe: "bg-blue-500",
+          badge: "bg-blue-500"
+        }
+      case "Закрыт":
+        return {
+          stripe: "bg-red-500",
+          badge: "bg-red-500"
+        }
       default:
         return {
-          stripe: "bg-green-500",
-          badge: "bg-green-500"
+          stripe: "bg-gray-500",
+          badge: "bg-gray-500"
         }
     }
   }
 
+  const handleDelete = (deletedId: string) => {
+    setCases(cases.filter(c => c.caseId !== deletedId))
+  }
+
+  if (!cases.length) {
+    return <div className="text-center text-gray-500 py-4">Нет дел для отображения.</div>
+  }
+
   return (
     <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {data.map((c) => {
+      {cases.map((c) => {
         const { stripe, badge } = getStatusClasses(c.status)
         return (
           <li
@@ -67,7 +86,7 @@ export function CaseList({ data }: CaseListProps) {
                   </span>
                 </div>
               </div>
-              <div className="flex justify-end mt-4">
+              <div className="flex justify-end gap-2 mt-4">
                 <Link href={`/dashboard/cases/${c.caseId}`}>
                   <Button
                     variant="outline"
@@ -85,6 +104,8 @@ export function CaseList({ data }: CaseListProps) {
                     </svg>
                   </Button>
                 </Link>
+                {/* Delete button */}
+                <DeleteCaseButton caseId={c.caseId} onDelete={() => handleDelete(c.caseId)} />
               </div>
             </div>
           </li>

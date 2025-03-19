@@ -7,7 +7,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
-import { BarChart3, FileText, Home, Settings, Users, Calendar, MessageSquare } from "lucide-react"
+import { BarChart3, FileText, Home, Settings, Users, Calendar, MessageSquare, CircleAlert } from "lucide-react"
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog"
 import { VisuallyHidden } from  "@/components/ui/visually-hidden"
 
@@ -62,7 +62,7 @@ export function Sidebar({ className, ...props }: SidebarNavProps) {
     {
       href: "/dashboard/subscription",
       title: "Подписки",
-      icon: <Settings className="h-5 w-5" />
+      icon: <CircleAlert className="h-5 w-5" />,
     }
   ]
 

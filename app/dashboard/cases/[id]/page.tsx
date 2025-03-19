@@ -14,6 +14,7 @@ type CaseData = {
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 async function getCaseData(caseId: string, authToken: string): Promise<CaseData> {
+  
   const res = await fetch(`${apiUrl}/cases/${caseId}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -32,6 +33,8 @@ async function getCaseData(caseId: string, authToken: string): Promise<CaseData>
 }
 
 export default async function CaseDetailPage({ params }: { params: { id: string } }) {
+
+  const { id } = await Promise.resolve(params)
   const cookieStore = await cookies()
   const authToken = cookieStore.get("authToken")?.value
 
@@ -39,7 +42,7 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
     throw error("Unauthorized")
   }
 
-  const caseDataResponse = await getCaseData(params.id, authToken)
+  const caseDataResponse = await getCaseData(id, authToken)
   const caseData = Array.isArray(caseDataResponse) ? caseDataResponse[0] : caseDataResponse
 
   // Format the deadline to a more understandable format
@@ -86,9 +89,11 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
               <span className="font-semibold text-lg text-gray-700">Статус:</span>
               <span
                 className={`ml-3 inline-block px-3 py-1 rounded-full text-sm font-medium ${
-                  caseData.status === "Pending"
-                    ? "bg-yellow-500 text-white"
-                    : "bg-green-500 text-white"
+                  caseData.status === "В процессе" ? "bg-yellow-500 text-white" :
+                  caseData.status === "Завершен" ? "bg-green-500 text-white" :
+                  caseData.status === "Закрыт" ? "bg-red-500 text-white" :
+                  caseData.status === "Открыт" ? "bg-blue-500 text-white" :
+                  "bg-gray-500 text-white"
                 }`}
               >
                 {caseData.status}
