@@ -7,6 +7,8 @@ interface Report {
     description: string;
 }
 
+const LOCAL_STORAGE_KEY = 'reports';
+
 const ReportsPage: React.FC = () => {
     const [reports, setReports] = useState<Report[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -17,17 +19,35 @@ const ReportsPage: React.FC = () => {
     const [newDescription, setNewDescription] = useState<string>('');
     const [formError, setFormError] = useState<string>('');
 
+    // Load reports on mount
     useEffect(() => {
         const fetchReports = async () => {
+            setLoading(true);
             try {
-                setLoading(true);
-                // Simulate API call
+                // Simulate a delay (optional, matches original behavior)
                 await new Promise(resolve => setTimeout(resolve, 1000));
-                const fakeData: Report[] = [
-                    { id: 1, title: 'Annual Report', description: 'Detailed annual performance with insights and statistics to help you understand the overall progress.' },
-                    { id: 2, title: 'Quarterly Report', description: 'In-depth analysis of quarterly trends highlighting growth opportunities and areas of improvement.' },
-                ];
-                setReports(fakeData);
+                const storedReports = localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (storedReports) {
+                    // Load from local storage if data exists
+                    const parsedReports: Report[] = JSON.parse(storedReports);
+                    setReports(parsedReports);
+                } else {
+                    // Set initial fake data if no stored reports
+                    const initialReports: Report[] = [
+                        {
+                            id: 1,
+                            title: 'Annual Report',
+                            description: 'Detailed annual performance with insights and statistics to help you understand the overall progress.',
+                        },
+                        {
+                            id: 2,
+                            title: 'Quarterly Report',
+                            description: 'In-depth analysis of quarterly trends highlighting growth opportunities and areas of improvement.',
+                        },
+                    ];
+                    setReports(initialReports);
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(initialReports));
+                }
             } catch (err) {
                 setError('Failed to load reports. Please try again later.');
             } finally {
@@ -37,6 +57,7 @@ const ReportsPage: React.FC = () => {
         fetchReports();
     }, []);
 
+    // Handle adding a new report
     const handleAddReport = (e: FormEvent) => {
         e.preventDefault();
         setFormError('');
@@ -44,13 +65,18 @@ const ReportsPage: React.FC = () => {
             setFormError('Both title and description are required.');
             return;
         }
-        // Create a new report with unique id
+        // Create a new report with a unique ID
         const newReport: Report = {
             id: reports.length ? Math.max(...reports.map(r => r.id)) + 1 : 1,
             title: newTitle.trim(),
             description: newDescription.trim(),
         };
-        setReports([newReport, ...reports]);
+        // Add the new report to the existing list
+        const updatedReports = [...reports, newReport];
+        setReports(updatedReports);
+        // Save to local storage
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedReports));
+        // Clear form fields
         setNewTitle('');
         setNewDescription('');
     };

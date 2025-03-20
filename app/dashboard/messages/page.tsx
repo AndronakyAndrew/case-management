@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 
 type Message = {
     id: number;
@@ -8,9 +8,25 @@ type Message = {
     createdAt: Date;
 };
 
+const LOCAL_STORAGE_KEY = 'messages';
+
 export default function MessagesPage() {
     const [messages, setMessages] = useState<Message[]>([]);
     const [input, setInput] = useState('');
+
+    // Load messages from local storage when the component mounts
+    useEffect(() => {
+        const storedMessages = localStorage.getItem(LOCAL_STORAGE_KEY);
+        if (storedMessages) {
+            const parsedMessages = JSON.parse(storedMessages);
+            // Convert createdAt strings back to Date objects
+            const messagesWithDates = parsedMessages.map((msg: any) => ({
+                ...msg,
+                createdAt: new Date(msg.createdAt),
+            }));
+            setMessages(messagesWithDates);
+        }
+    }, []);
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -20,8 +36,13 @@ export default function MessagesPage() {
             text: input,
             createdAt: new Date(),
         };
-        setMessages([...messages, newMessage]);
-        setInput('');
+
+        const updatedMessages = [...messages, newMessage];
+        setMessages(updatedMessages);
+        
+        // Save the updated list to local storage
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(updatedMessages));
+        setInput(''); // Clear the input field
     };
 
     return (
