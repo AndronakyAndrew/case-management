@@ -57,26 +57,6 @@ export function CaseList({ data }: CaseListProps) {
     return <div className="text-center text-gray-500 py-4">Нет дел для отображения.</div>
   }
 
-  const getStatusClasses = (status: string) => {
-    switch (status) {
-      case "В процессе":
-        return {
-          stripe: "bg-yellow-500",
-          badge: "bg-yellow-500"
-        }
-      case "Закрыт":
-        return {
-          stripe: "bg-green-500",
-          badge: "bg-green-500"
-        }
-      default:
-        return {
-          stripe: "bg-green-500",
-          badge: "bg-green-500"
-        }
-    }
-  }
-
   return (
     <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {cases.map((c) => {
