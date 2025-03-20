@@ -13,7 +13,6 @@ type CaseData = {
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 async function getCaseData(caseId: string, authToken: string): Promise<CaseData> {
-  
   const res = await fetch(`${apiUrl}/cases/${caseId}`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
@@ -32,8 +31,8 @@ async function getCaseData(caseId: string, authToken: string): Promise<CaseData>
 }
 
 export default async function CaseDetailPage({ params }: { params: { id: string } }) {
-
   const { id } = await Promise.resolve(params)
+
   const cookieStore = await cookies()
   const authToken = cookieStore.get("authToken")?.value
 
@@ -41,7 +40,8 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
     throw error("Unauthorized")
   }
 
-  const caseDataResponse = await getCaseData(id, authToken)
+  const caseDataResponse = await getCaseData(id, authToken);
+  
   const caseData = Array.isArray(caseDataResponse) ? caseDataResponse[0] : caseDataResponse
 
   // Format the deadline to a more understandable format
