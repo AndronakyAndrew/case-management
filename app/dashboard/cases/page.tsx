@@ -9,8 +9,8 @@ import Link from "next/link"
 const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 export default async function CasesPage() {
-  try {
-    const cookieStore = await cookies()
+  
+  const cookieStore = await cookies()
     const authToken = cookieStore.get('authToken')?.value
 
     const res = await fetch(`${apiUrl}/cases`, {
@@ -21,7 +21,7 @@ export default async function CasesPage() {
     })
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch cases: ${res.statusText}`)
+      console.log(`${res.status} ${res.statusText}`)
     }
 
     const text = await res.text()
@@ -32,6 +32,8 @@ export default async function CasesPage() {
     } catch (err) {
       console.error("Error parsing JSON:", err)
     }
+  try {
+    
 
     return (
       <main className="max-w-7xl mx-auto p-6 transform -translate-x-4 -translate-y-2">
