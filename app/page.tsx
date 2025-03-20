@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowRight } from "lucide-react"
-import { motion } from "framer-motion"  // updated import
+import { motion } from "framer-motion"  
 
 export default function Home() {
   return (

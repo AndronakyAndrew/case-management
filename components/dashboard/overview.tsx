@@ -5,7 +5,7 @@ import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recha
 
 export function Overview() {
   const data = [
-    { name: "Мар", всего: 5 },
+    { name: "Мар", всего: 6 },
     { name: "Апр", всего: 0 },
     { name: "Май", всего: 0 },
     { name: "Июн", всего: 0 },
